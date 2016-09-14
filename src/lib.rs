@@ -1,6 +1,11 @@
 
 pub mod decoder;
+pub mod encoder;
+
 pub use decoder::{SDNVDecoder, decode};
+pub use encoder::{SDNVEncoder, encode};
+
+
 
 #[cfg(test)]
 mod tests {
@@ -57,6 +62,21 @@ mod tests {
         let result = SDNVDecoder::new()
             .set_max_length(0)
             .decode(&code);
+        assert_eq!(expected, result)
+    }
+
+    #[test]
+    fn encode_01() {
+        let content = 0xABC;
+        let expected = Some(vec![0x95, 0x3C]);
+        encode_test(content, expected);
+    }
+
+
+    fn encode_test(content: u64, expected: Option<Vec<u8>>) {
+        use super::SDNVEncoder;
+        let result = SDNVEncoder::new()
+            .encode(content);
         assert_eq!(expected, result)
     }
 
