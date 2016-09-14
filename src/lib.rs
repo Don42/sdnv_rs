@@ -1,23 +1,6 @@
 
-fn decode(input: &[u8], max_length: u32) -> Option<(u64, u32)> {
-    let mut content: u64 = 0;
-    let mut count: u32 = 0;
-    let max_length = match max_length {
-        0 => 9,
-        _ => std::cmp::min(9, max_length),
-    };
-    for c in input {
-        count += 1;
-        content <<= 7;
-        content += (c & 0x7Fu8) as u64;
-        if (0x80u8 & c) == 0 {
-            return Some((content, count));
-        } else if max_length != 0 && count >= max_length {
-            return None;
-        }
-    }
-    return None;
-}
+pub mod decoder;
+pub use decoder::{SDNVDecoder, decode};
 
 #[cfg(test)]
 mod tests {
@@ -70,7 +53,10 @@ mod tests {
         decode_test(&code, expected);
     }
     fn decode_test(code: &[u8], expected: Option<(u64, u32)>) {
-        let result = super::decode(&code, 0);
+        use super::SDNVDecoder;
+        let result = SDNVDecoder::new()
+            .set_max_length(0)
+            .decode(&code);
         assert_eq!(expected, result)
     }
 
