@@ -72,6 +72,44 @@ mod tests {
         encode_test(content, expected);
     }
 
+    #[test]
+    fn encode_02() {
+        let content = 0xFFFFFFFFFFFFFFFF;
+        let expected = None;
+        encode_test(content, expected);
+    }
+
+    #[test]
+    fn encode_03() {
+        let content = 0x7FFFFFFFFFFFFFFF;
+        let expected = Some(vec![0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F]);
+        encode_test(content, expected);
+    }
+
+    #[test]
+    fn encode_04() {
+        let content = 0x7F;
+        let expected = Some(vec![0x7F]);
+        encode_test(content, expected);
+    }
+    #[test]
+    fn encode_05() {
+        let content = 0x44;
+        let expected = Some(vec![0x44]);
+        encode_test(content, expected);
+    }
+    #[test]
+    fn encode_06() {
+        let content = 0x1234;
+        let expected = Some(vec![0xA4, 0x34]);
+        encode_test(content, expected);
+    }
+    #[test]
+    fn encode_07() {
+        let content = 0x4234;
+        let expected = Some(vec![0x81, 0x84, 0x34]);
+        encode_test(content, expected);
+    }
 
     fn encode_test(content: u64, expected: Option<Vec<u8>>) {
         use super::SDNVEncoder;
