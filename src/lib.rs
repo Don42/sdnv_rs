@@ -118,4 +118,22 @@ mod tests {
         assert_eq!(expected, result)
     }
 
+    #[test]
+    fn circle_test_01() {
+        use super::{SDNVDecoder, SDNVEncoder};
+        let content = 0xbeef;
+        let intermediate = SDNVEncoder::new().encode(content);
+        let result = SDNVDecoder::new().decode(intermediate.unwrap().as_slice());
+        assert_eq!((content, 3), result.unwrap())
+    }
+
+    #[test]
+    fn circle_test_02() {
+        use super::{SDNVDecoder, SDNVEncoder};
+        let input = vec![0x81, 0x84, 0x34];
+        let intermediate = SDNVDecoder::new().decode(input.as_slice()).unwrap();
+        let result = SDNVEncoder::new().encode(intermediate.0).unwrap();
+        assert_eq!(input, result);
+        assert_eq!(intermediate.1, 3);
+    }
 }
