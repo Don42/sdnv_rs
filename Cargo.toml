@@ -1,6 +1,6 @@
 [package]
 name = "sdnv"
 version = "0.1.0"
-authors = ["Marco 'don' Kaulea <DonMarco42@gmail.com>"]
+authors = ["Marco 'don' Kaulea <don@0xbeef.org>"]
 
 [dependencies]
